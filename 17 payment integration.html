@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Integration</title>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.payment-card{
+    background:#fff;
+    width:400px;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 4px 20px rgba(0,0,0,.1);
+    text-align:center;
+}
+
+h2{
+    margin-bottom:20px;
+}
+
+.amount{
+    font-size:32px;
+    font-weight:bold;
+    color:#2563eb;
+    margin:20px 0;
+}
+
+.pay-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.pay-btn:hover{
+    background:#1d4ed8;
+}
+
+.success{
+    margin-top:15px;
+    color:green;
+    display:none;
+}
+</style>
+</head>
+<body>
+
+<div class="payment-card">
+    <h2>Order Payment</h2>
+
+    <p>Complete your purchase securely</p>
+
+    <div class="amount">
+        ₹2,499
+    </div>
+
+    <button class="pay-btn" onclick="payNow()">
+        Pay Now
+    </button>
+
+    <div class="success" id="successMsg">
+        Payment Successful ✅
+    </div>
+</div>
+
+<script>
+
+function payNow(){
+
+    var options = {
+        key: "YOUR_RAZORPAY_KEY_ID",
+
+        amount: 249900, // paise
+
+        currency: "INR",
+
+        name: "ShopEase",
+
+        description: "Order Payment",
+
+        image: "https://via.placeholder.com/150",
+
+        handler: function (response){
+
+            document
+            .getElementById("successMsg")
+            .style.display = "block";
+
+            console.log(
+                "Payment ID:",
+                response.razorpay_payment_id
+            );
+
+            alert(
+                "Payment Successful\nID: "
+                + response.razorpay_payment_id
+            );
+        },
+
+        prefill: {
+            name: "Customer Name",
+            email: "customer@example.com",
+            contact: "9999999999"
+        },
+
+        theme: {
+            color: "#2563eb"
+        }
+    };
+
+    var rzp = new Razorpay(options);
+    rzp.open();
+}
+
+</script>
+
+</body>
+</html>
