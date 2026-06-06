@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AJ TEX API Integration</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.products {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    width: 250px;
+    border-radius: 8px;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+
+<h1>AJ TEX Sarees Collection</h1>
+
+<button onclick="loadProducts()">
+    Load Products
+</button>
+
+<div class="products" id="products"></div>
+
+<script>
+async function loadProducts() {
+    try {
+        const response = await fetch(
+            "http://localhost:3000/api/products"
+        );
+
+        const products = await response.json();
+
+        const container =
+            document.getElementById("products");
+
+        container.innerHTML = "";
+
+        products.forEach(product => {
+            container.innerHTML += `
+                <div class="card">
+                    <h3>${product.name}</h3>
+                    <p>Price: ₹${product.price}</p>
+                </div>
+            `;
+        });
+
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+</script>
+
+</body>
+</html>
