@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Role Based Access Control</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>AJ TEX Dashboard</h1>
+
+    <div class="card">
+        <h3>Common Dashboard</h3>
+        <p>Visible to all users</p>
+    </div>
+
+    <div id="adminPanel" class="card hidden">
+        <h3>Admin Panel</h3>
+        <button>Manage Users</button>
+        <button>Delete Products</button>
+    </div>
+
+    <div id="managerPanel" class="card hidden">
+        <h3>Manager Panel</h3>
+        <button>Manage Orders</button>
+    </div>
+
+    <div id="customerPanel" class="card hidden">
+        <h3>Customer Panel</h3>
+        <button>View Orders</button>
+    </div>
+
+    <script>
+        // Example role received after login
+        const user = {
+            name: "Aradhana",
+            role: "admin"
+        };
+
+        if (user.role === "admin") {
+            document
+                .getElementById("adminPanel")
+                .classList.remove("hidden");
+        }
+
+        if (user.role === "manager") {
+            document
+                .getElementById("managerPanel")
+                .classList.remove("hidden");
+        }
+
+        if (user.role === "customer") {
+            document
+                .getElementById("customerPanel")
+                .classList.remove("hidden");
+        }
+    </script>
+
+</body>
+</html>

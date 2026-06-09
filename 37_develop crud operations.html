@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CRUD Operations</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 30px auto;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+            width: 200px;
+        }
+
+        button {
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>User CRUD System</h2>
+
+    <input type="hidden" id="userId">
+
+    <input type="text" id="name" placeholder="Enter Name">
+
+    <input type="email" id="email" placeholder="Enter Email">
+
+    <button onclick="saveUser()">Save User</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody id="userTable"></tbody>
+    </table>
+
+<script>
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+function saveUser() {
+
+    const id = document.getElementById("userId").value;
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+
+    if (!name || !email) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    if (id) {
+
+        const index = users.findIndex(
+            user => user.id == id
+        );
+
+        users[index].name = name;
+        users[index].email = email;
+
+    } else {
+
+        users.push({
+            id: Date.now(),
+            name,
+            email
+        });
+    }
+
+    localStorage.setItem(
+        "users",
+        JSON.stringify(users)
+    );
+
+    clearForm();
+    displayUsers();
+}
+
+function displayUsers() {
+
+    const table =
+        document.getElementById("userTable");
+
+    table.innerHTML = "";
+
+    users.forEach(user => {
+
+        table.innerHTML += `
+            <tr>
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+
+                <td>
+                    <button
+                        onclick="editUser(${user.id})">
+                        Edit
+                    </button>
+
+                    <button
+                        onclick="deleteUser(${user.id})">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function editUser(id) {
+
+    const user =
+        users.find(u => u.id === id);
+
+    document.getElementById("userId").value =
+        user.id;
+
+    document.getElementById("name").value =
+        user.name;
+
+    document.getElementById("email").value =
+        user.email;
+}
+
+function deleteUser(id) {
+
+    users = users.filter(
+        user => user.id !== id
+    );
+
+    localStorage.setItem(
+        "users",
+        JSON.stringify(users)
+    );
+
+    displayUsers();
+}
+
+function clearForm() {
+
+    document.getElementById("userId").value = "";
+    document.getElementById("name").value = "";
+    document.getElementById("email").value = "";
+}
+
+displayUsers();
+
+</script>
+
+</body>
+</html>
