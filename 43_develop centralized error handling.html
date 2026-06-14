@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Centralized Error Handling</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            text-align:center;
+            margin-top:50px;
+        }
+
+        button{
+            padding:10px 20px;
+            cursor:pointer;
+        }
+
+        #result{
+            margin-top:20px;
+            color:red;
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Centralized Error Handling Demo</h2>
+
+    <button onclick="getUsers()">Load Users</button>
+
+    <div id="result"></div>
+
+    <script>
+        async function getUsers() {
+            try {
+                const response = await fetch(
+                    "http://localhost:3000/api/users"
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message);
+                }
+
+                document.getElementById("result").innerHTML =
+                    "Users Loaded Successfully";
+
+            } catch (error) {
+                document.getElementById("result").innerHTML =
+                    "Error: " + error.message;
+            }
+        }
+    </script>
+
+</body>
+</html>

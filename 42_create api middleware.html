@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Middleware Demo</title>
+</head>
+<body>
+
+    <h2>API Middleware Example</h2>
+
+    <input type="text" id="username" placeholder="Enter Name">
+    <button onclick="sendData()">Send Data</button>
+
+    <pre id="result"></pre>
+
+    <script>
+        async function sendData() {
+            const name = document.getElementById("username").value;
+
+            const response = await fetch(
+                "http://localhost:3000/api/data",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ name })
+                }
+            );
+
+            const data = await response.json();
+
+            document.getElementById("result").innerText =
+                JSON.stringify(data, null, 2);
+        }
+    </script>
+
+</body>
+</html>
